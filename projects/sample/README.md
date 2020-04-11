@@ -52,7 +52,7 @@ Shadow实现了完整的Maven发布脚本，支持方便的Maven依赖。
 建议真正接入时按下面介绍，将二进制发布到自己的maven仓库中。
 ***
 
-在`buildScripts/gradle/maven.gradle`文件中配置了Shadow的Maven发布脚本。
+在`TimeCatGradle/maven.gradle`文件中配置了Shadow的Maven发布脚本。
 正式使用时，请修改其中的两个GroupID变量：`coreGroupId`、`dynamicGroupId`，
 以及`setScm`方法中的两个URL到自己的版本库地址上。
 

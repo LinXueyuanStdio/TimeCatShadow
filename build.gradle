@@ -15,9 +15,9 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-apply from: 'buildScripts/gradle/common.gradle'
+apply from: 'TimeCatGradle/common.gradle'
 
-apply from: "buildScripts/gradle/maven.gradle"
+apply from: "TimeCatGradle/maven.gradle"
 
 task clean(type: Delete) {
     delete rootProject.buildDir
