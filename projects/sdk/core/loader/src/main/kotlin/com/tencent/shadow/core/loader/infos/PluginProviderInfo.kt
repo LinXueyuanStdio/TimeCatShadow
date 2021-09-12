@@ -24,9 +24,9 @@ import android.os.Parcelable
 
 class PluginProviderInfo(className: String, val authority: String, val providerInfo: ProviderInfo) : Parcelable, PluginComponentInfo(className) {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readParcelable(ProviderInfo::class.java.classLoader)) {
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readParcelable(ProviderInfo::class.java.classLoader)!!) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

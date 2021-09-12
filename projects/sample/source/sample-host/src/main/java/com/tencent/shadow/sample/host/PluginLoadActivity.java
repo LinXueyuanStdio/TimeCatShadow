@@ -19,6 +19,7 @@
 package com.tencent.shadow.sample.host;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -53,35 +54,55 @@ public class PluginLoadActivity extends Activity {
             public void run() {
                 HostApplication.getApp().loadPluginManager(PluginHelper.getInstance().pluginManagerFile);
 
-                Bundle bundle = new Bundle();
-                bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, PluginHelper.getInstance().pluginZipFile.getAbsolutePath());
-                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY));
-                bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME));
-
+                Bundle extra = new Bundle();
+                extra.putInt("id", 100);
+                String action = "SHOW";
+                Uri uri = null;
+                Bundle bundle = getBundle(
+                        PluginHelper.getInstance().pluginZipFile.getAbsolutePath(),
+                        getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY),
+                        getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME),//"com.timecat.plugin.picturebed.github.GithubApp",
+                        extra, uri, action);
                 HostApplication.getApp().getPluginManager()
-                        .enter(PluginLoadActivity.this, Constant.FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
-                            @Override
-                            public void onShowLoadingView(final View view) {
-                                mHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mViewGroup.addView(view);
-                                    }
-                                });
-                            }
+                               .enter(PluginLoadActivity.this, Constant.FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
+                                   @Override
+                                   public void onShowLoadingView(final View view) {
+                                       mHandler.post(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               mViewGroup.addView(view);
+                                           }
+                                       });
+                                   }
 
-                            @Override
-                            public void onCloseLoadingView() {
-                                finish();
-                            }
+                                   @Override
+                                   public void onCloseLoadingView() {
+                                       finish();
+                                   }
 
-                            @Override
-                            public void onEnterComplete() {
+                                   @Override
+                                   public void onEnterComplete() {
 
-                            }
-                        });
+                                   }
+                               });
             }
         });
+    }
+
+    private Bundle getBundle(String zipAbsPathForPlugin,
+            String partName,
+            String activity_class_name,
+            Bundle extra,
+            Uri data,
+            String action) {
+        Bundle bundle = new Bundle();
+        bundle.putString(PluginManagerAggreement.KEY_PLUGIN_ZIP_PATH, zipAbsPathForPlugin);
+        bundle.putString(PluginManagerAggreement.KEY_PLUGIN_PART_KEY, partName);
+        bundle.putString(PluginManagerAggreement.KEY_ACTIVITY_CLASSNAME, activity_class_name);
+        bundle.putBundle(PluginManagerAggreement.KEY_EXTRAS, extra);
+        bundle.putString(PluginManagerAggreement.KEY_ACTION, action);
+        bundle.putParcelable(PluginManagerAggreement.KEY_DATA, data);
+        return bundle;
     }
 
     @Override

@@ -40,6 +40,8 @@ public interface IContainerFragment {
 
     Bundle getArguments();
 
+    Fragment getTargetFragment();
+
     boolean isAdded();
 
     boolean isDetached();

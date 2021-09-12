@@ -39,6 +39,7 @@ import com.tencent.shadow.sample.plugin.app.lib.usecases.provider.TestDBContentP
 import com.tencent.shadow.sample.plugin.app.lib.usecases.provider.TestFileProviderActivity;
 import com.tencent.shadow.sample.plugin.app.lib.usecases.receiver.TestDynamicReceiverActivity;
 import com.tencent.shadow.sample.plugin.app.lib.usecases.receiver.TestReceiverActivity;
+import com.tencent.shadow.sample.plugin.app.lib.usecases.service.TestServiceActivity;
 import com.tencent.shadow.sample.plugin.app.lib.usecases.webview.WebViewActivity;
 
 import java.util.ArrayList;
@@ -112,6 +113,11 @@ public class UseCaseManager {
                 new PluginUseHostClassActivity.Case(),
         });
         useCases.add(communicationCategory);
+
+        UseCaseCategory serviceCategory = new UseCaseCategory("Service 相关测试用例", new UseCase[]{
+                new TestServiceActivity.Case(),
+         });
+        useCases.add(serviceCategory);
     }
 
 

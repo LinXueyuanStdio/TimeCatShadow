@@ -130,6 +130,10 @@ public class ShadowFragment {
         return mContainerFragment.getArguments();
     }
 
+    final public Fragment getTargetFragment() {
+        return mContainerFragment.getTargetFragment();
+    }
+
     public PluginFragmentManager getFragmentManager() {
         if (mPluginFragmentManager == null && getActivity() != null) {
             mPluginFragmentManager = getActivity().getFragmentManager();

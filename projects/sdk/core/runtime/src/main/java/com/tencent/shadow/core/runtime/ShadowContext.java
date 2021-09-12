@@ -228,6 +228,17 @@ public class ShadowContext extends SubDirContextThemeWrapper {
     }
 
     @Override
+    public ComponentName startForegroundService(Intent service) {
+        if (service.getComponent() == null) {
+            return super.startForegroundService(service);
+        }
+        Pair<Boolean, ComponentName> ret = mPluginComponentLauncher.startService(this, service);
+        if (!ret.first)
+            return super.startForegroundService(service);
+        return ret.second;
+    }
+
+    @Override
     public ApplicationInfo getApplicationInfo() {
         return mApplicationInfo;
     }

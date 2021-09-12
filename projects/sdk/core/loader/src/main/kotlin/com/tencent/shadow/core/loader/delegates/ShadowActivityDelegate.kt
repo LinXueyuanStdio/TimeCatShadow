@@ -84,7 +84,7 @@ class ShadowActivityDelegate(private val mDI: DI) : GeneratedShadowActivityDeleg
     private var mCallingActivity: ComponentName? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val pluginInitBundle = if (savedInstanceState == null) mHostActivityDelegator.intent.extras else savedInstanceState
+        val pluginInitBundle = if (savedInstanceState == null) mHostActivityDelegator.intent.extras!! else savedInstanceState
 
         mCallingActivity = pluginInitBundle.getParcelable(CM_CALLING_ACTIVITY_KEY)
         mBusinessName = pluginInitBundle.getString(CM_BUSINESS_NAME_KEY, "")
@@ -99,7 +99,7 @@ class ShadowActivityDelegate(private val mDI: DI) : GeneratedShadowActivityDeleg
         mBundleForPluginLoader = bundleForPluginLoader
         bundleForPluginLoader.classLoader = this.javaClass.classLoader
         val pluginActivityClassName = bundleForPluginLoader.getString(CM_CLASS_NAME_KEY)
-        val pluginActivityInfo: PluginActivityInfo = bundleForPluginLoader.getParcelable(CM_ACTIVITY_INFO_KEY)
+        val pluginActivityInfo: PluginActivityInfo = bundleForPluginLoader.getParcelable(CM_ACTIVITY_INFO_KEY)!!
 
         mCurrentConfiguration = Configuration(resources.configuration)
         mPluginHandleConfigurationChange =

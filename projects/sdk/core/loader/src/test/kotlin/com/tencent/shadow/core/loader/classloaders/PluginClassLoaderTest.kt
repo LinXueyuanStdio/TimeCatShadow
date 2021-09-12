@@ -97,7 +97,7 @@ class PluginClassLoaderTest {
     fun case41() {
         val packageNames = arrayOf("a.b.c.*")
         val className = "a.b.c.D"
-        Assert.assertFalse(className.inPackage(packageNames))
+        Assert.assertTrue(className.inPackage(packageNames))
     }
 
     @Test
@@ -111,7 +111,7 @@ class PluginClassLoaderTest {
     fun case43() {
         val packageNames = arrayOf("a.b.c.*")
         val className = "a.b.c.d.E"
-        Assert.assertTrue(className.inPackage(packageNames))
+        Assert.assertFalse(className.inPackage(packageNames))
     }
 
     @Test
@@ -139,7 +139,7 @@ class PluginClassLoaderTest {
     fun case61() {
         val packageNames = arrayOf("a.b.c.**")
         val className = "a.b.c.D"
-        Assert.assertFalse(className.inPackage(packageNames))
+        Assert.assertTrue(className.inPackage(packageNames))
     }
 
     @Test
@@ -217,6 +217,12 @@ class PluginClassLoaderTest {
         val packageNames = arrayOf("com.tencent**")
         val className = "com.tencentshadow.next.MyClass"
         Assert.assertFalse(className.inPackage(packageNames))
+    }
+    @Test
+    fun case75() {
+        val packageNames = arrayOf("retrofit2.**")
+        val className = "retrofit2.Retrofit\$Builder"
+        Assert.assertTrue(className.inPackage(packageNames))
     }
 }
 

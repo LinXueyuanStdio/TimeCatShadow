@@ -34,6 +34,7 @@ public class TestApplication extends Application {
         isOnCreate = true;
         super.onCreate();
         UseCaseManager.initCase();
+//        MMKV.initialize(getApplicationContext());
     }
 
     public static TestApplication getInstance() {

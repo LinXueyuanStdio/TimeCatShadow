@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="master_colorPrimary">#80CBC4</color>
+    <color name="master_colorAccent">#80CBC4</color>
+    <color name="master_textColorPrimary">@android:color/white</color>
+    <color name="master_icon_view">@android:color/white</color>
+    <color name="master_background">@android:color/black</color>
+    <color name="trans">@android:color/transparent</color>
+    <color name="colorActivityBack">#263238</color>
+
+</resources>

@@ -113,7 +113,7 @@ object LoadPluginBloc {
                 val pluginInfo = buildPluginInfo.get()
                 if (pluginInfo.appComponentFactory != null) {
                     val clazz = pluginClassLoader.loadClass(pluginInfo.appComponentFactory)
-                    ShadowAppComponentFactory::class.java.cast(clazz.newInstance())
+                    ShadowAppComponentFactory::class.java.cast(clazz.newInstance())!!
                 } else ShadowAppComponentFactory()
             })
 

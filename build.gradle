@@ -7,8 +7,9 @@ buildscript {
     ext.build_gradle_version = '3.5.3'
     
     repositories {
-        google()
+        mavenCentral()
         jcenter()
+        google()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$build_gradle_version"

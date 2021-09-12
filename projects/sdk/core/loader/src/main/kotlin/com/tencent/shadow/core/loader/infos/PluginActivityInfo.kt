@@ -24,9 +24,9 @@ import android.os.Parcelable
 
 class PluginActivityInfo(className: String, val themeResource: Int, val activityInfo: ActivityInfo) : Parcelable, PluginComponentInfo(className) {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
+            parcel.readString()!!,
             parcel.readInt(),
-            parcel.readParcelable(ActivityInfo::class.java.classLoader)) {
+            parcel.readParcelable(ActivityInfo::class.java.classLoader)!!) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

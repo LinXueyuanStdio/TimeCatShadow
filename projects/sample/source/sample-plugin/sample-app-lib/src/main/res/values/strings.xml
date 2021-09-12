@@ -19,5 +19,10 @@
 <resources>
     <!-- Simple strings. -->
     <string name="app_name">Shadow主测试用例集合</string>
+    <string name="pref">picture_bed_github_pref</string>
+    <string name="main_miniapp_Github">Github 图床</string>
+    <string name="main_miniapp_running">运行中</string>
+    <string name="main_miniapp_mininized">最小化</string>
+
 </resources>
 

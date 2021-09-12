@@ -83,7 +83,7 @@ class ShadowContentProviderDelegate(private val mProviderManager: PluginContentP
 
     override fun bulkInsert(uri: Uri, values: Array<ContentValues>?): Int {
         val pluginUri = mProviderManager.convert2PluginUri(uri)
-        return mProviderManager.getPluginContentProvider(pluginUri.authority!!)!!.bulkInsert(pluginUri, values)
+        return mProviderManager.getPluginContentProvider(pluginUri.authority!!)!!.bulkInsert(pluginUri, values!!)
     }
 
     override fun call(method: String, arg: String?, extras: Bundle): Bundle? {
@@ -93,12 +93,12 @@ class ShadowContentProviderDelegate(private val mProviderManager: PluginContentP
 
     override fun openFile(uri: Uri, mode: String?): ParcelFileDescriptor? {
         val pluginUri = mProviderManager.convert2PluginUri(uri)
-        return mProviderManager.getPluginContentProvider(pluginUri.authority!!)!!.openFile(pluginUri, mode)
+        return mProviderManager.getPluginContentProvider(pluginUri.authority!!)!!.openFile(pluginUri, mode!!)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     override fun openFile(uri: Uri, mode: String?, signal: CancellationSignal?): ParcelFileDescriptor? {
         val pluginUri = mProviderManager.convert2PluginUri(uri)
-        return mProviderManager.getPluginContentProvider(pluginUri.authority!!)!!.openFile(pluginUri, mode, signal)
+        return mProviderManager.getPluginContentProvider(pluginUri.authority!!)!!.openFile(pluginUri, mode!!, signal)
     }
 }

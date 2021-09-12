@@ -9,7 +9,10 @@ android {
         versionCode project.VERSION_CODE
         versionName project.VERSION_NAME
     }
-
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/rxjava.properties'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -31,6 +34,18 @@ dependencies {
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
+
+    implementation 'joda-time:joda-time:2.10.1'
+    implementation 'com.tencent:mmkv:1.0.16'
+
+    def retrofitSdkVersion = "2.6.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitSdkVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitSdkVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitSdkVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitSdkVersion"
+    implementation "com.squareup.okhttp3:okhttp:3.10.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+
     //注意sample-host-lib要用compileOnly编译而不打包在插件中。在packagePlugin任务中配置hostWhiteList允许插件访问宿主的类。
     compileOnly files("${project(":sample-host-lib").getBuildDir()}/outputs/jar/sample-host-lib-debug.jar")
 }

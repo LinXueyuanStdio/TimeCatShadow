@@ -26,7 +26,7 @@ import android.os.Parcelable
  */
 class PluginServiceInfo(className: String) : Parcelable, PluginComponentInfo(className) {
     constructor(parcel: Parcel) : this(
-            parcel.readString())
+            parcel.readString()!!)
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(className)

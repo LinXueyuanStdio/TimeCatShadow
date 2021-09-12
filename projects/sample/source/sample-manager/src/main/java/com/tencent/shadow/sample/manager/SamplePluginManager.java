@@ -18,15 +18,23 @@
 
 package com.tencent.shadow.sample.manager;
 
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
 import com.tencent.shadow.dynamic.host.EnterCallback;
+import com.tencent.shadow.dynamic.loader.PluginServiceConnection;
 import com.tencent.shadow.sample.constant.Constant;
+import com.tencent.shadow.sample.plugin.IMyAidlInterface;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -80,6 +88,8 @@ public class SamplePluginManager extends FastPluginManager {
             //do nothing.
         } else if (fromId == Constant.FROM_ID_START_ACTIVITY) {
             onStartActivity(context, bundle, callback);
+        } else if (fromId == PluginManagerAggreement.FROM_ID_CALL_SERVICE) {
+            callPluginService(context, bundle);
         } else {
             throw new IllegalArgumentException("不认识的fromId==" + fromId);
         }
@@ -123,4 +133,67 @@ public class SamplePluginManager extends FastPluginManager {
             }
         });
     }
+
+
+    private void callPluginService(final Context context, Bundle bundle) {
+        final String pluginZipPath = bundle.getString(PluginManagerAggreement.KEY_PLUGIN_ZIP_PATH);
+        final String partKey = bundle.getString(PluginManagerAggreement.KEY_PLUGIN_PART_KEY);
+        final String className = bundle.getString(PluginManagerAggreement.KEY_ACTIVITY_CLASSNAME);
+        final Bundle extras = bundle.getBundle(PluginManagerAggreement.KEY_EXTRAS);
+        final String action = bundle.getString(PluginManagerAggreement.KEY_ACTION);
+        final Uri data = bundle.getParcelable(PluginManagerAggreement.KEY_DATA);
+
+        if (className == null) {
+            throw new NullPointerException("className == null");
+        }
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstalledPlugin installedPlugin
+                            = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
+
+                    loadPlugin(installedPlugin.UUID, partKey);
+
+                    Intent pluginIntent = new Intent();
+                    pluginIntent.setClassName(context.getPackageName(), className);
+                    if (extras != null) {
+                        pluginIntent.replaceExtras(extras);
+                    }
+                    if (action != null) {
+                        pluginIntent.setAction(action);
+                    }
+                    if (data != null) {
+                        pluginIntent.setData(data);
+                    }
+
+                    boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
+                        @Override
+                        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                            IMyAidlInterface iMyAidlInterface = IMyAidlInterface.Stub.asInterface(iBinder);
+                            try {
+                                String s = iMyAidlInterface.basicTypes(1, 2, true, 4.0f, 5.0, "6");
+                                Log.i("SamplePluginManager", "iMyAidlInterface.basicTypes : " + s);
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                        @Override
+                        public void onServiceDisconnected(ComponentName componentName) {
+                            throw new RuntimeException("onServiceDisconnected");
+                        }
+                    }, Service.BIND_AUTO_CREATE);
+
+                    if (!callSuccess) {
+                        throw new RuntimeException("bind service失败 className==" + className);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
 }

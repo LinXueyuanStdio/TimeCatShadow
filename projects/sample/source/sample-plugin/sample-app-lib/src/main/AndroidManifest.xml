@@ -76,7 +76,25 @@
         <activity android:name="com.tencent.shadow.sample.plugin.app.lib.usecases.context.ApplicationContextSubDirTestActivity" />
         <activity android:name=".usecases.host_communication.PluginUseHostClassActivity" />
         <activity android:name=".usecases.webview.WebViewActivity" />
+        <activity android:name=".usecases.service.TestServiceActivity" />
+        <service
+            android:name="com.timecat.plugin.picturebed.github.GithubApp"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+            </intent-filter>
+        </service>
 
+        <activity
+            android:name="com.timecat.plugin.picturebed.github.MainActivity"
+            android:theme="@android:style/Theme.NoDisplay">
+            <!--路由 activity 不需要显示，所以 Theme.NoDisplay-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <provider
             android:authorities="com.tencent.shadow.provider.test"
             android:name="com.tencent.shadow.sample.plugin.app.lib.usecases.provider.TestProvider" />
@@ -90,6 +108,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
+        <service android:name=".usecases.service.TestService" />
     </application>
 
 </manifest>

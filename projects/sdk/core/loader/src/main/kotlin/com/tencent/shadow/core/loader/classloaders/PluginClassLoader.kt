@@ -70,6 +70,7 @@ class PluginClassLoader(
         } else if (className.subStringBeforeDot() == "com.tencent.shadow.core.runtime") {
             return loaderClassLoader.loadClass(className)
         } else if (className.inPackage(allHostWhiteList)
+                || className.startsWith("androidx.test.espresso")
                 || (Build.VERSION.SDK_INT < 28 && className.startsWith("org.apache.http"))) {//Android 9.0以下的系统里面带有http包，走系统的不走本地的) {
             return super.loadClass(className, resolve)
         } else {
@@ -103,6 +104,8 @@ class PluginClassLoader(
 
 private fun String.subStringBeforeDot() = substringBeforeLast('.', "")
 
+private fun String.packageNameWithDot() = subStringBeforeDot() + '.'
+
 internal fun String.inPackage(packageNames: Array<String>): Boolean {
     val packageName = subStringBeforeDot()
 
@@ -133,3 +136,19 @@ internal fun String.inPackage(packageNames: Array<String>): Boolean {
 }
 
 
+//internal fun String.inPackage(packageNames: Array<String>): Boolean {
+//    return packageNames.any {
+//        return@any when {
+//            it == "" -> false
+//            it == ".*" -> false
+//            it == ".**" -> false
+//            it.endsWith(".*") -> {//只允许一级子包
+//                this.packageNameWithDot() == it.packageNameWithDot()
+//            }
+//            it.endsWith(".**") -> {//允许所有子包
+//                this.packageNameWithDot().startsWith(it.packageNameWithDot())
+//            }
+//            else -> this.packageNameWithDot() == "$it."
+//        }
+//    }
+//}
